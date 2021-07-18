@@ -25,7 +25,13 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'require',
+            'description' => 'require',
+            'price' => 'require',
+            'duration' => 'require',
+        ]);
+        return Services::create($request->validated());
     }
 
     /**
@@ -36,7 +42,7 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        //
+        return Services::find($id);
     }
 
     /**
@@ -48,7 +54,15 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $service = Services::find($id);
+        $request->validate([
+            'name' => 'require',
+            'description' => 'require',
+            'price' => 'require',
+            'duration' => 'require',
+        ]);
+
+        $service->update($request->validated());
     }
 
     /**
