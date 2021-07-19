@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\ServiceController;
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +17,23 @@ use App\Http\Controllers\ServiceController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+// ## Public routes
+// # Auth
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+
+// ## Protected routes
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Logout
+    Route::post('logout', [AuthController::class, 'logout']);
+
+    // Services
+    Route::resource('services',ServiceController::class);    
+});
+
+// Getting ative user
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('services',ServiceController::class);
 
