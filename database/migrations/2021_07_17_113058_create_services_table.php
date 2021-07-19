@@ -18,7 +18,7 @@ class CreateServicesTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->decimal('price',5 ,2 );
-            $table->integer('duration');
+            $table->integer('duration')->nullable();
             
             $table->timestamps();
         });
