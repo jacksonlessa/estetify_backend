@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Services;
+use App\Http\Requests\ServiceRequest;
+use App\Models\Service;
 
 class ServiceController extends Controller
 {
@@ -14,24 +14,18 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        return Services::all();
+        return Service::all();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ServiceRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ServiceRequest $request)
     {
-        $request->validate([
-            'name' => 'require',
-            'description' => 'require',
-            'price' => 'require',
-            'duration' => 'require',
-        ]);
-        return Services::create($request->validated());
+        return Service::create($request->validated());
     }
 
     /**
@@ -42,27 +36,21 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        return Services::find($id);
+        return Service::find($id);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ServiceRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ServiceRequest $request, $id)
     {
-        $service = Services::find($id);
-        $request->validate([
-            'name' => 'require',
-            'description' => 'require',
-            'price' => 'require',
-            'duration' => 'require',
-        ]);
+        $service = Service::find($id);
 
-        $service->update($request->validated());
+        return $service->update($request->validated());
     }
 
     /**
@@ -73,6 +61,7 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
+        return Service::destroy($id);
         //
     }
 }

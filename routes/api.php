@@ -19,9 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/services',[ServiceController::class, 'index']);
-Route::post('/services',[ServiceController::class, 'store']);
-Route::get('/services/{id}',[ServiceController::class, 'show']);
-Route::put('/services/{id}',[ServiceController::class, 'update']);
-Route::delete('/services/{id}',[ServiceController::class, 'destroy']);
+Route::resource('services',ServiceController::class);
 
