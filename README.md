@@ -4,8 +4,8 @@
 
 ## Requirements
 
-Docker
-Sail
+- Docker
+- Sail
 
 ## Install
 
@@ -23,7 +23,8 @@ alias sail='bash vendor/bin/sail
 
 depois de adicionar o comando vc pode executar todos os comandos do docker através do alias ```sail``` 
 
-
+| command                  | short description                                     |
+|--------------------------|-------------------------------------------------------|
 | sail up                  | inicia a máquina do docker                            |
 | sail php artisan         | executa o artisan através do php da maquina do docker |
 | sail php artisan migrate | roda o migrate na base do docker                      |
