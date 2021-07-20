@@ -16,3 +16,8 @@ cpf/cnpj
 telefone
 opt-in
 termos de uso e privacidade
+
+
+
+Sala do meet
+https://meet.google.com/mna-wrph-knx
