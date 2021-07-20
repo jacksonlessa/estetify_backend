@@ -13,12 +13,13 @@ class AuthController extends Controller
             'name'=> 'required|string',
             'email'=> 'required|string|unique:users,email',
             'password' => 'required|string|confirmed',
+            'device_name' => "required",
         ]);
 
         $fields['password'] = bcrypt($fields['password']);
         $user = User::create($fields);
 
-        $token = $user->createToken('myapptoken')->plainTextToken;
+        $token = $user->createToken($fields)->plainTextToken;
 
         $response = [
             'user' => $user,
@@ -46,6 +47,7 @@ class AuthController extends Controller
         $fields = $request->validate([
             'email'=> 'required|string',
             'password' => 'required|string',
+            'device_name' => "required",
         ]);
 
         // Check email
@@ -59,7 +61,7 @@ class AuthController extends Controller
             );
         }
 
-        $token = $user->createToken('myapptoken')->plainTextToken;
+        $token = $user->createToken($fields['device_name'])->plainTextToken;
 
         $response = [
             'user' => $user,
