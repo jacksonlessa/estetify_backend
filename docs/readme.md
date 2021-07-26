@@ -1,6 +1,6 @@
 https://estetify.com = home site, pagina dfe preço, vantagens, contato, faq e bla bla bla
 https://estetify.com/camargo-e-lessa-saloa
-https://dash.estetify.com = nuxt JS SPA
+https://app.estetify.com = nuxt JS SPA
 https://sys.estetify.com = Laravel API
 
 
