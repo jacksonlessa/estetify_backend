@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ServiceRequest;
+use App\Http\Requests\ClientRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
-class ServiceController extends Controller
+class ClientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        return Auth::user()->account->services()
+        return Auth::user()->account->professionals()
             ->orderBy('name')
             ->filter(Request::only('search', 'trashed'))
             ->paginate()
@@ -25,16 +25,16 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\ServiceRequest  $request
+     * @param  \Illuminate\Http\ClientRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ServiceRequest $request)
+    public function store(ClientRequest $request)
     {
-        Auth::user()->account->services()->create(
+        Auth::user()->account->professionals()->create(
             $request->validated()
         );
 
-        return response(['Service created'],201);
+        return response(['Professional created'],201);
     }
 
     /**
@@ -45,61 +45,58 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $service = Auth::user()->account->services()->withTrashed()->find($id);
+        $client = Auth::user()->account->clients()->withTrashed()->find($id);
         
-        if(!$service)
+        if(!$client)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
         
-        return $service;
-        // return Service::find($id);
+        return $client;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\ServiceRequest  $request
+     * @param  \Illuminate\Http\ClientRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ServiceRequest $request, $id)
+    public function update(ClientRequest $request, $id)
     {
-        $service =  Auth::user()->account->services()->find($id);
+        $client =  Auth::user()->account->clients()->find($id);
 
-        if(!$service)
+        if(!$client)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
         
-        if($service->update($request->validated()))
+        if($client->update($request->validated()))
             return response(
                 ['message' => 'resource updated']
                 ,200);
     }
 
     /**
-     * Delete the specified resource from storage.
+     * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $service =  Auth::user()->account->services()->find($id);
+        $client =  Auth::user()->account->clients()->find($id);
 
-        if(!$service)
+        if(!$client)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
-        if($service->delete())
+        if($client->delete())
             return response(
                 ['message' => 'resource deleted']
-                ,200); 
-
-        //
+                ,200);
     }
-    
+
     /**
      * Restore the specified resource from storage.
      *
@@ -108,14 +105,14 @@ class ServiceController extends Controller
      */
     public function restore($id)
     {
-        $service =  Auth::user()->account->services()->withTrashed()->find($id);
+        $client =  Auth::user()->account->clients()->withTrashed()->find($id);
 
-        if(!$service)
+        if(!$client)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
 
-        if($service->restore())
+        if($client->restore())
             return response(
                 ['message' => 'resource restored']
                 ,200);

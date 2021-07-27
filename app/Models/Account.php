@@ -39,4 +39,20 @@ class Account extends Model
     {
         return $this->hasMany(Service::class);
     }
+
+    /**
+     * Get the professionals for the account.
+     */
+    public function professionals()
+    {
+        return $this->hasMany(Professional::class);
+    }
+
+    /**
+     * Get the clients for the account.
+     */
+    public function clients()
+    {
+        return $this->hasMany(Service::class);
+    }
 }

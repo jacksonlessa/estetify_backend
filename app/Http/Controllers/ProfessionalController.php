@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ServiceRequest;
+use App\Http\Requests\ProfessionalRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
-class ServiceController extends Controller
+class ProfessionalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        return Auth::user()->account->services()
+        return Auth::user()->account->professionals()
             ->orderBy('name')
             ->filter(Request::only('search', 'trashed'))
             ->paginate()
@@ -25,16 +25,17 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\ServiceRequest  $request
+     * @param  \Illuminate\Http\ProfessionalRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ServiceRequest $request)
+    public function store(ProfessionalRequest $request)
     {
-        Auth::user()->account->services()->create(
+        //
+        Auth::user()->account->professionals()->create(
             $request->validated()
         );
 
-        return response(['Service created'],201);
+        return response(['Professional created'],201);
     }
 
     /**
@@ -45,61 +46,60 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $service = Auth::user()->account->services()->withTrashed()->find($id);
+        //
+        $professional = Auth::user()->account->professionals()->withTrashed()->find($id);
         
-        if(!$service)
+        if(!$professional)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
         
-        return $service;
-        // return Service::find($id);
+        return $professional;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\ServiceRequest  $request
+     * @param  \Illuminate\Http\ProfessionalRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ServiceRequest $request, $id)
+    public function update(ProfessionalRequest $request, $id)
     {
-        $service =  Auth::user()->account->services()->find($id);
+        $professional =  Auth::user()->account->professionals()->find($id);
 
-        if(!$service)
+        if(!$professional)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
         
-        if($service->update($request->validated()))
+        if($professional->update($request->validated()))
             return response(
                 ['message' => 'resource updated']
                 ,200);
     }
 
     /**
-     * Delete the specified resource from storage.
+     * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $service =  Auth::user()->account->services()->find($id);
+        $professional =  Auth::user()->account->professionals()->find($id);
 
-        if(!$service)
+        if(!$professional)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
-        if($service->delete())
+        if($professional->delete())
             return response(
                 ['message' => 'resource deleted']
                 ,200); 
 
-        //
     }
-    
+
     /**
      * Restore the specified resource from storage.
      *
@@ -108,14 +108,14 @@ class ServiceController extends Controller
      */
     public function restore($id)
     {
-        $service =  Auth::user()->account->services()->withTrashed()->find($id);
+        $professional =  Auth::user()->account->professionals()->withTrashed()->find($id);
 
-        if(!$service)
+        if(!$professional)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
 
-        if($service->restore())
+        if($professional->restore())
             return response(
                 ['message' => 'resource restored']
                 ,200);
