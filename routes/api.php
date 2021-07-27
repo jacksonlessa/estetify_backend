@@ -28,7 +28,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     // Services
-    Route::resource('services',ServiceController::class);    
+    Route::apiResources([
+        'services' => ServiceController::class,
+    ]);
+
+    // Restore Routes
+    Route::put('services/{id}/restore', [ServiceController::class, 'restore'])
+        ->name('services.restore');
+
 });
 
 // Getting ative user

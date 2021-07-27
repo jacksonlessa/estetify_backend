@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ServiceRequest;
 use App\Models\Service;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class ServiceController extends Controller
 {
@@ -14,7 +16,11 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        return Service::all();
+        return Auth::user()->account->services()
+            ->orderBy('name')
+            ->filter(Request::only('search', 'trashed'))
+            ->paginate()
+            ->appends(Request::all());
     }
 
     /**
@@ -25,7 +31,11 @@ class ServiceController extends Controller
      */
     public function store(ServiceRequest $request)
     {
-        return Service::create($request->validated());
+        Auth::user()->account->services()->create(
+            $request->validated()
+        );
+
+        return response(['Service created'],201);
     }
 
     /**
@@ -36,7 +46,15 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        return Service::find($id);
+        $service = Auth::user()->account->services()->withTrashed()->find($id);
+        
+        if(!$service)
+            return response(
+                ['message' => 'insufficient permission']
+                ,403);
+        
+        return $service;
+        // return Service::find($id);
     }
 
     /**
@@ -48,20 +66,58 @@ class ServiceController extends Controller
      */
     public function update(ServiceRequest $request, $id)
     {
-        $service = Service::find($id);
+        $service =  Auth::user()->account->services()->find($id);
 
-        return $service->update($request->validated());
+        if(!$service)
+            return response(
+                ['message' => 'insufficient permission']
+                ,403);
+        
+        if($service->update($request->validated()))
+            return response(
+                ['message' => 'resource updated']
+                ,200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        return Service::destroy($id);
+        $service =  Auth::user()->account->services()->find($id);
+
+        if(!$service)
+            return response(
+                ['message' => 'insufficient permission']
+                ,403);
+        if($service->delete())
+            return response(
+                ['message' => 'resource deleted']
+                ,200); 
+
         //
+    }
+     /**
+     * Restore the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $service =  Auth::user()->account->services()->withTrashed()->find($id);
+
+        if(!$service)
+            return response(
+                ['message' => 'insufficient permission']
+                ,403);
+
+        if($service->restore())
+            return response(
+                ['message' => 'resource restored']
+                ,200);
     }
 }
