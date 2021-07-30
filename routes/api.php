@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ProfessionalController;
+use App\Http\Controllers\ClientController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,17 +32,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Services
     Route::apiResources([
         'services' => ServiceController::class,
-        'professional' => ProfessionalController::class,
-        'client' => ClientController::class,
+        'professionals' => ProfessionalController::class,
+        'clients' => ClientController::class,
     ]);
 
     // Restore Routes
     Route::put('services/{id}/restore', [ServiceController::class, 'restore'])
         ->name('services.restore');
-    Route::put('professional/{id}/restore', [ProfessionalController::class, 'restore'])
-        ->name('professional.restore');
-    Route::put('client/{id}/restore', [ClientController::class, 'restore'])
-        ->name('client.restore');
+    Route::put('professionals/{id}/restore', [ProfessionalController::class, 'restore'])
+        ->name('professionals.restore');
+    Route::put('clients/{id}/restore', [ClientController::class, 'restore'])
+        ->name('clients.restore');
 
 });
 

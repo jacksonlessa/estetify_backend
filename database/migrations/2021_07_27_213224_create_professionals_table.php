@@ -15,6 +15,12 @@ class CreateProfessionalsTable extends Migration
     {
         Schema::create('professionals', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('account_id')
+                ->constrained();
+            $table->string('name');
+           
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

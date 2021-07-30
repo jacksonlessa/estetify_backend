@@ -15,7 +15,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return Auth::user()->account->professionals()
+        return Auth::user()->account->clients()
             ->orderBy('name')
             ->filter(Request::only('search', 'trashed'))
             ->paginate()
@@ -30,7 +30,7 @@ class ClientController extends Controller
      */
     public function store(ClientRequest $request)
     {
-        Auth::user()->account->professionals()->create(
+        Auth::user()->account->clients()->create(
             $request->validated()
         );
 

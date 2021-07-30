@@ -16,6 +16,7 @@ class AccountSeeder extends Seeder
         \App\Models\Account::factory()
             ->count(10)
             ->hasUsers(1)
+            ->hasClients(50)
             ->create();
     }
 }

@@ -53,6 +53,6 @@ class Account extends Model
      */
     public function clients()
     {
-        return $this->hasMany(Service::class);
+        return $this->hasMany(Client::class);
     }
 }
