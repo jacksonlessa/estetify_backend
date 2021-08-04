@@ -2,7 +2,7 @@ https://estetify.com = home site, pagina dfe preço, vantagens, contato, faq e b
 https://estetify.com/camargo-e-lessa-saloa
 https://app.estetify.com = nuxt JS SPA
 https://sys.estetify.com = Laravel API
-
+https://sys.estetify.com/dash = Dash
 
 
 step 1 - registra usuário
