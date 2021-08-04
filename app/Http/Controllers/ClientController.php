@@ -34,7 +34,7 @@ class ClientController extends Controller
             $request->validated()
         );
 
-        return response(['Professional created'],201);
+        return response(['resource created'],201);
     }
 
     /**
