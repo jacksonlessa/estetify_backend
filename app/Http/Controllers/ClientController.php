@@ -30,11 +30,11 @@ class ClientController extends Controller
      */
     public function store(ClientRequest $request)
     {
-        Auth::user()->account->clients()->create(
+        $resource = Auth::user()->account->clients()->create(
             $request->validated()
         );
 
-        return response(['resource created'],201);
+        return response($resource,201);
     }
 
     /**
