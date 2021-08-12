@@ -17,7 +17,7 @@ class ClientController extends Controller
     {
         return Auth::user()->account->clients()
             ->orderBy('name')
-            ->filter(Request::only('search', 'trashed'))
+            ->filter(Request::only('search', 'trashed', 'phone','document','email'))
             ->paginate()
             ->appends(Request::all());
     }
