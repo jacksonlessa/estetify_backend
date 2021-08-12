@@ -18,9 +18,9 @@ class CreateClientsTable extends Migration
             $table->foreignId('account_id')
                 ->constrained();
             $table->string('name');
-            $table->string('document', 14);
-            $table->string('phone', 15);
-            $table->string('email');
+            $table->string('document', 18)->nullable();
+            $table->string('phone', 15)->nullable();
+            $table->string('email')->nullable();
            
 
             $table->softDeletes();

@@ -17,7 +17,7 @@ class ClientController extends Controller
     {
         return Auth::user()->account->clients()
             ->orderBy('name')
-            ->filter(Request::only('search', 'trashed'))
+            ->filter(Request::only('search', 'trashed', 'phone','document','email'))
             ->paginate()
             ->appends(Request::all());
     }
@@ -30,11 +30,11 @@ class ClientController extends Controller
      */
     public function store(ClientRequest $request)
     {
-        Auth::user()->account->clients()->create(
+        $resource = Auth::user()->account->clients()->create(
             $request->validated()
         );
 
-        return response(['Professional created'],201);
+        return response($resource,201);
     }
 
     /**
