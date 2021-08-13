@@ -31,11 +31,11 @@ class ProfessionalController extends Controller
     public function store(ProfessionalRequest $request)
     {
         //
-        Auth::user()->account->professionals()->create(
+        $resource = Auth::user()->account->professionals()->create(
             $request->validated()
         );
 
-        return response(['Professional created'],201);
+        return response($resource,201);
     }
 
     /**
