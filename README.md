@@ -11,6 +11,7 @@
 
 ```
 docker-compose up
+docker-compose exec laravel.test composer install
 ```
 
 ## Tip
