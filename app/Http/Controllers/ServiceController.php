@@ -30,11 +30,11 @@ class ServiceController extends Controller
      */
     public function store(ServiceRequest $request)
     {
-        Auth::user()->account->services()->create(
+        $resource = Auth::user()->account->services()->create(
             $request->validated()
         );
 
-        return response(['Service created'],201);
+        return response($resource,201);
     }
 
     /**
