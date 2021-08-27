@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ProfessionalController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,6 +35,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         'services' => ServiceController::class,
         'professionals' => ProfessionalController::class,
         'clients' => ClientController::class,
+        'users' => UserController::class,
     ]);
 
     // Restore Routes
@@ -43,6 +45,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('professionals.restore');
     Route::put('clients/{id}/restore', [ClientController::class, 'restore'])
         ->name('clients.restore');
+    Route::put('users/{id}/restore', [UserController::class, 'restore'])
+        ->name('users.restore');
 
 });
 
