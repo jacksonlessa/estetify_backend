@@ -36,23 +36,4 @@ class ServiceRequest extends FormRequest
             // 'duration' => 'required',
         ];
     }
-    
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'name.required' => 'O campo nome deve ser preenchido',
-            'name.max' => 'Máximo de caracteres :max',
-            'description.max' => 'máximo de caracteres :max',
-            'price.required' => 'O campo preço deve ser preenchido',
-            'price.numeric' => 'Preço deve um número',
-            'price.min' => 'Valor minímo :min',
-            'price.max' => 'Valor máximo :max',
-            'price.regex' => 'Formato de preço inválido',
-        ];
-    }
 }
