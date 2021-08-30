@@ -16,7 +16,6 @@ class AuthController extends Controller
             'device_name' => "required",
         ]);
 
-        $fields['password'] = bcrypt($fields['password']);
         $user = User::create($fields);
 
         $token = $user->createToken($fields)->plainTextToken;

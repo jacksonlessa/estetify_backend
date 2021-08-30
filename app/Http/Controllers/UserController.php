@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -32,9 +31,6 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $inputs = $request->validated();
-
-        if($inputs['password'])
-            $inputs['password'] = Hash::make($inputs['password']);
 
         $resource = Auth::user()->account->users()->create($inputs);
 
@@ -66,7 +62,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
         $user =  Auth::user()->account->users()->find($id);
 
@@ -77,10 +73,7 @@ class UserController extends Controller
 
         $inputs = $request->validated();
 
-        if($inputs['password'])
-            $inputs['password'] = Hash::make($inputs['password']);
-
-        
+       
         if($user->update($inputs))
             return response(
                 ['message' => 'resource updated']
