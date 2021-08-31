@@ -9,6 +9,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ProfessionalController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\ScheduleController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -48,6 +50,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('users/{id}/restore', [UserController::class, 'restore'])
         ->name('users.restore');
 
+
+    Route::get('/professionals/{professional}/schedule/', [ScheduleController::class, 'index'])
+        ->name('professionals.schedule.index');
 });
 
 // Getting ative user
