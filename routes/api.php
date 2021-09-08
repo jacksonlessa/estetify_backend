@@ -37,7 +37,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         'services' => ServiceController::class,
         'professionals' => ProfessionalController::class,
         'clients' => ClientController::class,
-        'users' => UserController::class,
+        'users' => UserController::class,        
+        'schedules' => ScheduleController::class,
     ]);
 
     // Restore Routes
@@ -51,8 +52,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('users.restore');
 
 
-    Route::get('/professionals/{professional}/schedule/', [ScheduleController::class, 'index'])
-        ->name('professionals.schedule.index');
+    // Route::get('/professionals/{professional}/schedule/', [ScheduleController::class, 'index'])
+    //     ->name('professionals.schedule.index');
 });
 
 // Getting ative user

@@ -159,6 +159,12 @@ return [
         'cpf' => "CPF",
         'cnpj' => "CNPJ",
 
+        "client_id" => "cliente",
+        "professional _id" => "cliente",
+        "scheduled_at" => "data e hora",
+        "services" => "serviços",
+
+
         'address'   => 'endereço',
         'age'       => 'idade',
         'body'      => 'conteúdo',
