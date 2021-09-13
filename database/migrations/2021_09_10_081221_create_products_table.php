@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateScheduleServiceTable extends Migration
+class CreateProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateScheduleServiceTable extends Migration
      */
     public function up()
     {
-        Schema::create('schedule_service', function (Blueprint $table) {
-            $table->foreignId('schedule_id')
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('account_id')
                 ->constrained();
-            $table->foreignId('service_id')
-                ->constrained();                 
+            $table->string('name');
+            $table->string('description')->nullable();
             $table->decimal('price',5 ,2 );
+            $table->integer('stock');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateScheduleServiceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedule_service');
+        Schema::dropIfExists('products');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSchedulesTable extends Migration
+class CreateOrderItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,19 @@ class CreateSchedulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('schedules', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('account_id')
+        Schema::create('order_items', function (Blueprint $table) {
+            $table->foreignId('order_id')
                 ->constrained();
-            $table->foreignId('client_id')
+            $table->foreignId('service_id')
+                ->nullable()
                 ->constrained();
-            $table->foreignId('professional_id')
+            $table->foreignId('product_id')
+                ->nullable()
                 ->constrained();
-
-            $table->timestamp("scheduled_at");
                 
-            $table->softDeletes();
+            $table->integer('quantity')->default(1);
+            $table->decimal('original_price',5 ,2 );
+            $table->decimal('price',5 ,2 );
             $table->timestamps();
         });
     }
@@ -36,6 +37,6 @@ class CreateSchedulesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedules');
+        Schema::dropIfExists('order_items');
     }
 }

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateScheduleRequest;
-use App\Models\Schedule;
+use App\Http\Requests\CreateOrderRequest;
+use App\Models\Order;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ScheduleController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -60,20 +60,24 @@ class ScheduleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateScheduleRequest $request)
+    public function store(CreateOrderRequest $request) 
     {
         $inputs = $request->validated();
         $inputs['account_id'] = Auth::user()->account_id;
 
         // dd($inputs);
-        $schedule = Schedule::create($inputs);
         $services = collect($inputs['services'])
             ->map(function($servicePrice) {
-                return ["price" => $servicePrice];
+                return [
+                    "original_price" => $servicePrice["original_price"],
+                    "price" => $servicePrice["price"]
+                ];
             });
+        
+        $order = Order::create($inputs);
 
-        $schedule->services()->sync($services);
-        return response($schedule,201);
+        $order->services()->sync($services);
+        return response($order,201);
     }
 
     /**

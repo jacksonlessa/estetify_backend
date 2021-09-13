@@ -10,7 +10,7 @@ use App\Http\Controllers\ProfessionalController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
 
-use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -38,7 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         'professionals' => ProfessionalController::class,
         'clients' => ClientController::class,
         'users' => UserController::class,        
-        'schedules' => ScheduleController::class,
+        'orders' => OrderController::class,
     ]);
 
     // Restore Routes

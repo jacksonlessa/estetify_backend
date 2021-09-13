@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateScheduleRequest extends FormRequest
+class CreateOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,8 +28,22 @@ class CreateScheduleRequest extends FormRequest
             "client_id" => "required",
             "professional_id" => "required",
             "scheduled_at" => "required|date",
+            "total" =>  [
+                'required',
+                'numeric',
+                'min:0',
+                'max:9999999.99',
+                'regex:/^\d+(\.\d{1,2})?$/'
+            ],
             // "service.id" => "required|integer",
-            "services.*" => [
+            "services.*.price" => [
+                'required',
+                'numeric',
+                'min:0',
+                'max:99999.99',
+                'regex:/^\d+(\.\d{1,2})?$/'
+            ],
+            "services.*.original_price" => [
                 'required',
                 'numeric',
                 'min:0',
