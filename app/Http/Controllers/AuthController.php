@@ -13,19 +13,11 @@ class AuthController extends Controller
             'name'=> 'required|string',
             'email'=> 'required|string|unique:users,email',
             'password' => 'required|string|confirmed',
-            'device_name' => "required",
         ]);
 
         $user = User::create($fields);
-
-        $token = $user->createToken($fields)->plainTextToken;
-
-        $response = [
-            'user' => $user,
-            'token' => $token
-        ];
-
-        return response($response, 201);
+        
+        return response($user, 201);
     }
 
     public function logout(Request $request){
