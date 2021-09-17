@@ -12,7 +12,8 @@
 ```
 cp .env.example .env
 docker-compose --env-file ./.env up
-docker-compose exec estetify-backend_laravel.test_1 composer install
+docker-compose exec laravel composer install
+sail artisan key:generate
 ```
 
 ## Tip
