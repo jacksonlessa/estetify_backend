@@ -25,4 +25,5 @@ Funcionalidades:
   ☐ Perfil Profissional (Só acessa sua agenda e clientes, nao acessa serviços, usuarios, profissionais e produtos)
   ☐ Criar pagina de Atendimento Completa (serviço relacionado ao profissional podendo ter 2 servicos com 2 profissionais simultaneamente, produto com total e desconto, desconto total do atendimento)
   ☐ PWA e funcionamento offline
+  ☐ Cadastrar cliente a partir do antendimento
   ☐ TAGS @critical @high @low @today
