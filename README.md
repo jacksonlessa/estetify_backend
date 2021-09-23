@@ -13,7 +13,7 @@ abra o arquivo de configuração do seu terminal exemplo
 ```nano ~/.bashrc```
 e adicione no final do arquivo o alias para o sail
 
-```alias sail='bash vendor/bin/sail')```
+```alias sail='bash vendor/bin/sail'```
 
 ## Install
 
