@@ -17,13 +17,10 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'slug',
-        'beta_tester',
+        'name', 'document', 'activity',
+        'phone'
     ];
-
-
-
+    
     /**
      * Get the users for the account.
      */

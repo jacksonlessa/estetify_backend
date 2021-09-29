@@ -16,9 +16,9 @@ class CreateAccountsTable extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug')->unique();
+            // $table->string('slug')->unique();
             $table->string('document', 18);
-            $table->string('activity_type', 30);
+            $table->string('activity', 30);
             $table->string('phone', 15)->nullable();
             $table->boolean('beta_test')->default(0);
             $table->softDeletes();

@@ -163,7 +163,9 @@ return [
         "professional _id" => "cliente",
         "scheduled_at" => "data e hora",
         "services" => "serviços",
-
+        
+        "activity" => "ramo de atividade",
+        "other_activity" => "outro ramo",
 
         'address'   => 'endereço',
         'age'       => 'idade',

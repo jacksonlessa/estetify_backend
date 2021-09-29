@@ -9,6 +9,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ProfessionalController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AccountController;
 
 use App\Http\Controllers\OrderController;
 /*
@@ -32,15 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Logout
     Route::post('logout', [AuthController::class, 'logout']);
 
-    // Services
-    Route::apiResources([
-        'services' => ServiceController::class,
-        'professionals' => ProfessionalController::class,
-        'clients' => ClientController::class,
-        'users' => UserController::class,        
-        'orders' => OrderController::class,
-    ]);
-
+    
     // Restore Routes
     Route::put('services/{id}/restore', [ServiceController::class, 'restore'])
         ->name('services.restore');
@@ -50,7 +43,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('clients.restore');
     Route::put('users/{id}/restore', [UserController::class, 'restore'])
         ->name('users.restore');
-
+    
+    // Resources
+    Route::apiResources([
+        'services' => ServiceController::class,
+        'accounts' => AccountController::class,
+        'professionals' => ProfessionalController::class,
+        'clients' => ClientController::class,
+        'users' => UserController::class,
+        'orders' => OrderController::class,
+    ]);
+    
+    
 
     // Route::get('/professionals/{professional}/schedule/', [ScheduleController::class, 'index'])
     //     ->name('professionals.schedule.index');
