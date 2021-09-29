@@ -9,6 +9,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ProfessionalController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\AccountController;
 
 use App\Http\Controllers\OrderController;
@@ -58,11 +59,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Route::get('/professionals/{professional}/schedule/', [ScheduleController::class, 'index'])
     //     ->name('professionals.schedule.index');
+
+    Route::get(
+        '/user/profile',
+        [UserProfileController::class, 'show']
+    )->name('profile');
+    Route::put(
+        '/user/profile',
+        [UserProfileController::class, 'update']
+    )->name('profile.edit');
 });
-
-// Getting ative user
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
