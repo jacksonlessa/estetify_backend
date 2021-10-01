@@ -1,9 +1,9 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
 services:
-    webserver:
+    nginx:
         image: nginx:alpine
-        container_name: webserver
+        container_name: nginx
         build:
             context: ./docker/nginx
         restart: unless-stopped
