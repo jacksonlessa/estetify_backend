@@ -33,20 +33,19 @@ services:
         networks:
             - apiEstetify
     app:
-        build:
+       build:
             context: ./docker/8.0
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: php:8.0-fpm
+        image: sail-8.0/app
         container_name: app
         environment:
-            SERVICE_NAME: app
-            SERVICE_TAGS: dev
+            WWWUSER: '${WWWUSER}'
         working_dir: /var/www
         volumes:
             - ./:/var/www
-            - ./docker/8.0/php.ini:/usr/local/etc/php/conf.d/local.ini
+            # - ./docker/8.0/php.ini:/usr/local/etc/php/conf.d/local.ini
         networks:
             - apiEstetify
         depends_on:
