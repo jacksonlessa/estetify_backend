@@ -52,5 +52,5 @@ COPY php.ini /etc/php/8.0/cli/conf.d/99-sail.ini
 RUN chmod +x /usr/local/bin/start-container
 
 EXPOSE 8000
-
-ENTRYPOINT ["start-container"]
+ENTRYPOINT ["php-fpm"]
+# ENTRYPOINT ["start-container"]
