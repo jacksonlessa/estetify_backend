@@ -33,12 +33,11 @@ services:
         networks:
             - apiEstetify
     app:
-       build:
+        build:
             context: ./docker/8.0
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: sail-8.0/app
         container_name: app
         environment:
             WWWUSER: '${WWWUSER}'
