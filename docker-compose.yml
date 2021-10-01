@@ -1,22 +1,48 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
 services:
-    laravel.test:
+    nginx:
+        image: nginx:1.15-alpine
+        build:
+            context: ./docker/nginx
+        restart: unless-stopped
+        # depends_on:
+        #    - app
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./data/nginx:/etc/nginx/conf.d
+            - ./docker/certbot/conf:/etc/letsencrypt
+            - ./docker/certbot/www:/var/www/certbot
+        networks:
+            - api-estetify
+    certbot:
+        image: certbot/certbot
+        restart: unless-stopped
+        volumes:
+            - ./docker/certbot/conf:/etc/letsencrypt
+            - ./docker/certbot/www:/var/www/certbot
+        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+        command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+        networks:
+            - api-estetify
+    app:
         build:
             context: ./docker/8.0
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
         image: sail-8.0/app
-        ports:
-            - '${APP_PORT:-80}:80'
+        #ports:
+        #    - '${APP_PORT:-8080}:8080'
         environment:
             WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
         volumes:
             - '.:/var/www/html'
         networks:
-            - sail
+            - api-estetify
         depends_on:
             - mysql
             - redis
@@ -35,7 +61,7 @@ services:
         volumes:
             - 'sailmysql:/var/lib/mysql'
         networks:
-            - sail
+            - api-estetify
         healthcheck:
           test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
           retries: 3
@@ -47,38 +73,14 @@ services:
         volumes:
             - 'sailredis:/data'
         networks:
-            - sail
+            - api-estetify
         healthcheck:
           test: ["CMD", "redis-cli", "ping"]
           retries: 3
           timeout: 5s
-    # meilisearch:
-    #     image: 'getmeili/meilisearch:latest'
-    #     ports:
-    #         - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
-    #     volumes:
-    #         - 'sailmeilisearch:/data.ms'
-    #     networks:
-    #         - sail
-    #     healthcheck:
-    #       test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
-    #       retries: 3
-    #       timeout: 5s
-    mailhog:
-        image: 'mailhog/mailhog:latest'
-        ports:
-            - '${FORWARD_MAILHOG_PORT:-1025}:1025'
-            - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
-        networks:
-            - sail
-    # selenium:
-    #    image: 'selenium/standalone-chrome'
-    #    volumes:
-    #         - '/dev/shm:/dev/shm'
-    #    networks:
-    #        - sail
+    
 networks:
-    sail:
+    api-estetify:
         driver: bridge
 volumes:
     sailmysql:
