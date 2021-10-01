@@ -1,0 +1,87 @@
+# For more information: https://laravel.com/docs/sail
+version: '3'
+services:
+    nginx:
+        image: nginx:1.15-alpine
+        build:
+            context: ./docker/nginx
+        restart: unless-stopped
+        depends_on:
+            - app
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./data/nginx:/etc/nginx/conf.d
+            - ./docker/certbot/conf:/etc/letsencrypt
+            - ./docker/certbot/www:/var/www/certbot
+    certbot:
+        image: certbot/certbot
+        restart: unless-stopped
+        volumes:
+            - ./docker/certbot/conf:/etc/letsencrypt
+            - ./docker/certbot/www:/var/www/certbot
+        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+        command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    app:
+        build:
+            context: ./docker/8.0
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.0/app
+        ports:
+            - '${APP_PORT:-8080}:8080'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - api-estetify
+        depends_on:
+            - mysql
+            - redis
+            # - meilisearch
+            # - selenium
+    mysql:
+        image: 'mysql:8.0'
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        volumes:
+            - 'sailmysql:/var/lib/mysql'
+        networks:
+            - api-estetify
+        healthcheck:
+          test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+          retries: 3
+          timeout: 5s
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'sailredis:/data'
+        networks:
+            - api-estetify
+        healthcheck:
+          test: ["CMD", "redis-cli", "ping"]
+          retries: 3
+          timeout: 5s
+    
+networks:
+    api-estetify:
+        driver: bridge
+volumes:
+    sailmysql:
+        driver: local
+    sailredis:
+        driver: local
+    # sailmeilisearch:
+    #     driver: local
