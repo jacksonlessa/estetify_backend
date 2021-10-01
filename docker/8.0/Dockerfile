@@ -4,7 +4,7 @@ LABEL maintainer="Taylor Otwell"
 
 ARG WWWGROUP
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TZ=UTC
