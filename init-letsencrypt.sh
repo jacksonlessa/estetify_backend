@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-domains=(example.org www.example.org)
+domains=(api.estetify.com.br)
 rsa_key_size=4096
 data_path="./docker/certbot"
 email="" # Adding a valid address is strongly recommended
