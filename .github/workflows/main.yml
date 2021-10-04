@@ -19,17 +19,20 @@ jobs:
     runs-on: warsaw
 
     steps:      
-    - name: Updating Code
-      run: git pull origin main
+    - name: Touch repo
+      run: echo "hi"
+      
+    #- name: Updating Code
+    #  run: git pull origin main
 
-    - name: Starting Application
-      run: docker-compose up -d
+    #- name: Starting Application
+    #  run: docker-compose up -d
 
-    - name: Copy .env if it doesn't exist
-      run: docker-compose exec -T app php -r "file_exists('.env') || copy('.env.example', '.env');"
+    #- name: Copy .env if it doesn't exist
+    #  run: docker-compose exec -T app php -r "file_exists('.env') || copy('.env.example', '.env');"
 
-    - name: Install composer dependences
-      run: docker-compose exec -T app composer install
+    #- name: Install composer dependences
+    #  run: docker-compose exec -T app composer install
 
     - name: Running Migrations
       run: docker-compose exec -T app php artisan migrate --force
