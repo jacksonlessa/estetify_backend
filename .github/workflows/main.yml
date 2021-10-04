@@ -19,8 +19,11 @@ jobs:
     runs-on: warsaw
 
     steps:
+    - name: Entering folder
+      run: cd /home/apiestetify/api/estetify_backend
+      
     - name: Updating Code
-      run: git pull origin master
+      run: git pull origin main
 
     - name: Starting Application
       run: docker-compose up -d
