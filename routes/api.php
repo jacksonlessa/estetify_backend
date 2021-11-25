@@ -38,8 +38,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Restore Routes
     Route::put('services/{id}/restore', [ServiceController::class, 'restore'])
         ->name('services.restore');
-    Route::put('professionals/{id}/restore', [ProfessionalController::class, 'restore'])
-        ->name('professionals.restore');
     Route::put('clients/{id}/restore', [ClientController::class, 'restore'])
         ->name('clients.restore');
     Route::put('users/{id}/restore', [UserController::class, 'restore'])
@@ -49,11 +47,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResources([
         'services' => ServiceController::class,
         'accounts' => AccountController::class,
-        'professionals' => ProfessionalController::class,
         'clients' => ClientController::class,
         'users' => UserController::class,
         'orders' => OrderController::class,
     ]);
+
+    // Professionals
+    Route::get('professionals/', [ProfessionalController::class, 'index'])
+        ->name('professionals.index');
+    Route::get('professionals/{id}', [ProfessionalController::class, 'show'])
+        ->name('professionals.show');
     
     
 

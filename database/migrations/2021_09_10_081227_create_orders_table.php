@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
                 ->constrained();
             $table->foreignId('client_id')
                 ->constrained();
-            $table->foreignId('professional_id')
+            $table->foreignId('user_id')
                 ->constrained();
 
             $table->timestamp("scheduled_at");

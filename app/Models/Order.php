@@ -10,7 +10,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['client_id', 'professional_id', 'account_id', 'scheduled_at', 'total'];
+    protected $fillable = ['client_id', 'user_id', 'account_id', 'scheduled_at', 'total'];
     
     
     public function setScheduledAtAttribute($timestampTz)

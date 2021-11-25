@@ -26,7 +26,7 @@ class CreateOrderRequest extends FormRequest
         return [
             //
             "client_id" => "required",
-            "professional_id" => "required",
+            "user_id" => "required",
             "scheduled_at" => "required|date",
             "total" =>  [
                 'required',
