@@ -52,4 +52,12 @@ class Account extends Model
     {
         return $this->hasMany(Client::class);
     }
+
+    /**
+     * Get the clients for the account.
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

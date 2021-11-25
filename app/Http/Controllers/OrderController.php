@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateOrderRequest;
-use App\Models\Order;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use DateTime;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -19,39 +18,13 @@ class OrderController extends Controller
      */
     public function index()
     {
-        // Generate a basic list of dates determined by professional config
-        // $period  = CarbonPeriod::create('now', '2 days');
-        $startDate = Carbon::now();
-        $endDate = Carbon::now();
-        $endDate->addDays(15);
-        $period = CarbonPeriod::create($startDate, $endDate);
-
-        $dates = [];
-        foreach ($period as $date) {
-            $date->hour = 0;
-            $date->minute = 0;
-            $date->second = 0;
-            $dates[$date->format('m-d')] = [
-                "local" => $date->toDateTimeLocalString(),
-                "iso" => $date->format(DateTime::ISO8601),
-                "date" => $date->format('Y-m-d H:i:s'),
-                "availableTimes" => []
-            ];
-            $availableTimes = [];
-            $date->hour = 8;
-            for($i=0; $i <=12;$i++){
-                $availableTimes[] = $date->format('Y-m-d H:i:s');
-                $date->addMinutes(30);
-            }
-            $dates[$date->format('m-d')]["availableTimes"] = $availableTimes;
-        }
-
-
-        // Get all Professional current scheduled events
-
-
-        // Merge two arrays
-        return response($dates);
+        return Auth::user()->account->orders()
+            ->with('professional', 'client')
+            ->filter(Request::only('search', 'client_name', 'professional_name', 'schedule_range'))
+            ->orderBy('scheduled_at')
+            ->paginate()
+            ->appends(Request::all());
+        
     }
 
     /**
@@ -112,5 +85,41 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function bootstrap_schedule(){
+        // Generate a basic list of dates determined by professional config
+        // $period  = CarbonPeriod::create('now', '2 days');
+        $startDate = Carbon::now();
+        $endDate = Carbon::now();
+        $endDate->addDays(15);
+        $period = CarbonPeriod::create($startDate, $endDate);
+
+        $dates = [];
+        foreach ($period as $date) {
+            $date->hour = 0;
+            $date->minute = 0;
+            $date->second = 0;
+            $dates[$date->format('m-d')] = [
+                "local" => $date->toDateTimeLocalString(),
+                "iso" => $date->format(DateTime::ISO8601),
+                "date" => $date->format('Y-m-d H:i:s'),
+                "availableTimes" => []
+            ];
+            $availableTimes = [];
+            $date->hour = 8;
+            for($i=0; $i <=12;$i++){
+                $availableTimes[] = $date->format('Y-m-d H:i:s');
+                $date->addMinutes(30);
+            }
+            $dates[$date->format('m-d')]["availableTimes"] = $availableTimes;
+        }
+
+
+        // Get all Professional current scheduled events
+
+
+        // Merge two arrays
+        return response($dates);
     }
 }
