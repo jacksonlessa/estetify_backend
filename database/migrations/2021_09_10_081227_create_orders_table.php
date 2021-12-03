@@ -24,6 +24,7 @@ class CreateOrdersTable extends Migration
 
             $table->timestamp("scheduled_at");
 
+            $table->string('status');
             $table->decimal('total',7 ,2 );
                 
             $table->softDeletes();

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
+use App\Models\Order;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use DateTime;
@@ -62,6 +64,14 @@ class OrderController extends Controller
     public function show($id)
     {
         //
+        $order = Order::with(['services','client'])->where('account_id', Auth::user()->account_id)->find($id);
+
+        if(!$order)
+            return response(
+                ['message' => 'insufficient permission']
+                ,403);
+        
+        return $order;
     }
 
     /**
@@ -71,9 +81,27 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateOrderRequest $request, $id)
     {
         //
+        $order = Order::with(['services'])->where('account_id', Auth::user()->account_id)->find($id);
+        $inputs = $request->validated();
+
+        // dd($inputs);
+        $services = collect($inputs['services'])
+            ->map(function($servicePrice) {
+                return [
+                    "original_price" => $servicePrice["original_price"],
+                    "price" => $servicePrice["price"]
+                ];
+            });
+        
+        $order->update($inputs);
+        $order->services()->sync($services);
+
+        return response(
+            ['message' => 'resource updated']
+            ,200);
     }
 
     /**

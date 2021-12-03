@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
 class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['client_id', 'user_id', 'account_id', 'scheduled_at', 'total'];
+    protected $fillable = ['client_id', 'user_id', 'account_id', 'scheduled_at', 'status', 'total'];
     
     
     public function setScheduledAtAttribute($timestampTz)
