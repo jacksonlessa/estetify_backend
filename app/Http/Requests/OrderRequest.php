@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateOrderRequest extends FormRequest
+class OrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class CreateOrderRequest extends FormRequest
         return [
             //
             "client_id" => "required",
-            "user_id" => "required",
+            // "professional_id" => "required",
             "scheduled_at" => "required|date",
             "status" => "required",
             "total" =>  [
@@ -36,6 +36,12 @@ class CreateOrderRequest extends FormRequest
                 'max:9999999.99',
                 'regex:/^\d+(\.\d{1,2})?$/'
             ],
+            "observation" => [
+                "nullable",
+                "string",
+                "max:255"
+            ],
+            "payment_method" => "required_if:status,closed",
             // "service.id" => "required|integer",
             "services.*.price" => [
                 'required',

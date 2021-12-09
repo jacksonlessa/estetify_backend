@@ -25,7 +25,10 @@ class CreateOrdersTable extends Migration
             $table->timestamp("scheduled_at");
 
             $table->string('status');
+            $table->string('payment_method')->nullable();
             $table->decimal('total',7 ,2 );
+            
+            $table->string('observation', 255)->nullable();
                 
             $table->softDeletes();
             $table->timestamps();

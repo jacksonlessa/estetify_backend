@@ -11,7 +11,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['client_id', 'user_id', 'account_id', 'scheduled_at', 'status', 'total'];
+    protected $fillable = ['client_id', 'user_id', 'account_id', 'scheduled_at', 'status', 'total', 'payment_method', 'observation'];
     
     
     public function setScheduledAtAttribute($timestampTz)
@@ -67,9 +67,9 @@ class Order extends Model
     public function services()
     {
         return $this->belongsToMany('App\Models\Service', "order_items", 'order_id', 'service_id')->withPivot([
-            'quantity',
             'original_price',
             'price',
+            'professional_id',
             'created_at',
             'updated_at',
         ]);

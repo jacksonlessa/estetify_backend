@@ -26,6 +26,7 @@ class ClientRequest extends FormRequest
         return [
             'name' => 'required',
             'account_id' => 'required',
+            'birthdate' => 'nullable',
             'email' => [
                 'nullable',
                 // 'required',

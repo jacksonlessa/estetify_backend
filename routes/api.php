@@ -40,6 +40,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('services.restore');
     Route::put('clients/{id}/restore', [ClientController::class, 'restore'])
         ->name('clients.restore');
+    Route::put('professionals/{id}/restore', [ProfessionalController::class, 'restore'])
+        ->name('professionals.restore');
     Route::put('users/{id}/restore', [UserController::class, 'restore'])
         ->name('users.restore');
     
@@ -48,6 +50,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         'services' => ServiceController::class,
         'accounts' => AccountController::class,
         'clients' => ClientController::class,
+        'professionals' => ProfessionalController::class,
         'users' => UserController::class,
         'orders' => OrderController::class,
     ]);

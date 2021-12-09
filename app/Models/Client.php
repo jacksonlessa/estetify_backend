@@ -10,7 +10,7 @@ class Client extends Model
 {
     use HasFactory, SoftDeletes;
     
-    protected $fillable = ['name','email','phone','document','account_id'];
+    protected $fillable = ['name','email','phone','document','birthdate','account_id'];
     
     /**
      * Get the account that owns the client.

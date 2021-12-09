@@ -22,7 +22,9 @@ class CreateOrderItemsTable extends Migration
             $table->foreignId('product_id')
                 ->nullable()
                 ->constrained();
-                
+            $table->foreignId('professional_id')
+                ->nullable()
+                ->constrained();
             $table->integer('quantity')->default(1);
             $table->decimal('original_price',5 ,2 );
             $table->decimal('price',5 ,2 );

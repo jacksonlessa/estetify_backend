@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateOrderRequest;
-use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -35,17 +34,19 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateOrderRequest $request) 
+    public function store(OrderRequest $request) 
     {
         $inputs = $request->validated();
         $inputs['account_id'] = Auth::user()->account_id;
+        $inputs['user_id'] = Auth::user()->account_id;
 
         // dd($inputs);
         $services = collect($inputs['services'])
             ->map(function($servicePrice) {
                 return [
                     "original_price" => $servicePrice["original_price"],
-                    "price" => $servicePrice["price"]
+                    "price" => $servicePrice["price"],
+                    "professional_id" => $servicePrice["professional_id"]
                 ];
             });
         
@@ -81,7 +82,7 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateOrderRequest $request, $id)
+    public function update(OrderRequest $request, $id)
     {
         //
         $order = Order::with(['services'])->where('account_id', Auth::user()->account_id)->find($id);
@@ -92,7 +93,8 @@ class OrderController extends Controller
             ->map(function($servicePrice) {
                 return [
                     "original_price" => $servicePrice["original_price"],
-                    "price" => $servicePrice["price"]
+                    "price" => $servicePrice["price"],
+                    "professional_id" => $servicePrice["professional_id"]
                 ];
             });
         
