@@ -20,7 +20,8 @@ class CreateAccountsTable extends Migration
             $table->string('document', 18);
             $table->string('activity', 30);
             $table->string('phone', 15)->nullable();
-            $table->boolean('beta_test')->default(0);
+            $table->integer('plan_id')->nullable();
+            $table->json('features')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

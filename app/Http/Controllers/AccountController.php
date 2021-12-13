@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateAccountRequest;
+use App\Http\Requests\PlanSelectRequest;
 use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
@@ -32,15 +33,26 @@ class AccountController extends Controller
         
         $resource = Account::create($fields);
 
-        $resource->beta_test = true;
         $resource->save();
 
         $user = Auth::user();
-        $user->role="admin";
         $user->account_id= $resource->id;
         $user->save();
 
         return response($resource,201);
+    }
+
+    public function storePlan(PlanSelectRequest $request)
+    {
+        $fields = $request->validated();
+        $account = Account::findOrFail(Auth::user()->account_id);
+
+        $account->plan_id = $fields['id'];
+        $account->features = json_encode($fields['features']);
+
+        $account->save();
+        
+        return response($account,200);
     }
 
     /**

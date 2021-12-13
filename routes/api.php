@@ -28,6 +28,12 @@ use App\Http\Controllers\OrderController;
 // # Auth
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::put('/auth/recover-password',
+        [AuthController::class, 'recoverPassword']
+    )->name('auth.recover-password');
+Route::put('/auth/reset-password',
+    [AuthController::class, 'resetPassword']
+)->name('auth.reset-password');
 
 // ## Protected routes
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -44,6 +50,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('professionals.restore');
     Route::put('users/{id}/restore', [UserController::class, 'restore'])
         ->name('users.restore');
+
+
+
+    Route::post('accounts/plan', [AccountController::class, 'storePlan'])
+        ->name('accounts.plan');
     
     // Resources
     Route::apiResources([

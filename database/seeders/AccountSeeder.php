@@ -17,7 +17,7 @@ class AccountSeeder extends Seeder
             ->count(10)
             ->hasUsers(1)
             ->hasClients(50)
-            ->hasProfessionals(2)
+            ->hasProfessionals(1)
             ->create();
     }
 }
