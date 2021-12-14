@@ -30,7 +30,17 @@ class ProfessionalController extends Controller
      */
     public function store(ProfessionalRequest $request)
     {
-        //
+        // Verifica o limite de Profissionais cadastrado
+        if(Auth::user()->account->professionals->count()>=Auth::user()->account->features['professionals']){
+            $msg = "Você já atingiu o limite de profissionais de sua conta: ".Auth::user()->account->features['professionals'];
+            if(Auth::user()->account->features['professionals']==1){
+                $msg.= " profissional";
+            }else{
+                $msg.= " profissionais";
+            }
+            return response(['error'=>$msg],400);
+        }
+        
         $resource = Auth::user()->account->professionals()->create(
             $request->validated()
         );
@@ -114,6 +124,17 @@ class ProfessionalController extends Controller
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
+
+        // Verifica o limite de Profissionais cadastrado
+        if(Auth::user()->account->professionals->count()>=Auth::user()->account->features['professionals']){
+            $msg = "Você já atingiu o limite de profissionais de sua conta: ".Auth::user()->account->features['professionals'];
+            if(Auth::user()->account->features['professionals']==1){
+                $msg.= " profissional";
+            }else{
+                $msg.= " profissionais";
+            }
+            return response(['error'=>$msg],400);
+        }
 
         if($professional->restore())
             return response(

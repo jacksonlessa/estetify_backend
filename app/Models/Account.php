@@ -10,7 +10,15 @@ class Account extends Model
 {
     use HasFactory, SoftDeletes;
 
-
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'features' => 'array'
+    ];
+    
     /**
      * The attributes that are mass assignable.
      *

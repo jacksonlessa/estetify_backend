@@ -43,7 +43,7 @@ class AccountFactory extends Factory
             'activity' => $activities[0],
             'phone' => "(".rand(30,50).") ".rand(88000,99999)."-".rand(1000,9999),
             "plan_id" => $plan_id,
-            "features" => json_encode($featuresByPlan[$plan_id])
+            "features" => $featuresByPlan[$plan_id]
         ];
     }
 }

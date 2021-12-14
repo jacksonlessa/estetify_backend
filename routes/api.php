@@ -13,6 +13,9 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\AccountController;
 
 use App\Http\Controllers\OrderController;
+
+// RESUME AND REPORT
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -85,4 +88,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         '/user/profile',
         [UserProfileController::class, 'update']
     )->name('profile.edit');
+
+
+    // REPORTS
+    Route::get('dashboard/', [DashboardController::class, 'index'])
+        ->name('dashboard.index');
 });

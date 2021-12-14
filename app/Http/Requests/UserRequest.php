@@ -36,7 +36,8 @@ class UserRequest extends FormRequest
                 'email',
                 Rule::unique('users')->ignore($this->id)
             ],
-            'password' => 'sometimes|required|string|confirmed',
+            'role' => 'sometimes|required|string',
+            'password' => 'sometimes|required|string|min:8|confirmed',
         ];
     }
 }

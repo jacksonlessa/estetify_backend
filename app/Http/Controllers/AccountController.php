@@ -48,7 +48,7 @@ class AccountController extends Controller
         $account = Account::findOrFail(Auth::user()->account_id);
 
         $account->plan_id = $fields['id'];
-        $account->features = json_encode($fields['features']);
+        $account->features = ($fields['features']);
 
         $account->save();
         
