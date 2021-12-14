@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,10 +17,12 @@ class DashboardController extends Controller
     public function index()
     {
         //
+        $hoje = Order::whereIn("status", ['open','closed']);
+        $week = Order::whereIn("status", ['open','closed']);
         $resource = [
             "orders" => [
-                "day" => 10,
-                "week" => 45,
+                "day" => 1,
+                "week" => 1,
             ],
             "sales" => [
                 "day" => "R$ 770,00",
