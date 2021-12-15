@@ -94,7 +94,7 @@ class Order extends Model
 
     //SCOPED QUERIES
     /**
-     * Scope a query to only include orders not canceled.
+     * Scope a query to only include orders are not canceled.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return void
