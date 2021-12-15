@@ -17,16 +17,21 @@ class DashboardController extends Controller
     public function index()
     {
         //
-        $hoje = Order::whereIn("status", ['open','closed']);
-        $week = Order::whereIn("status", ['open','closed']);
+        $todayOrders = Order::valid()->today()->count();
+        $weekOrders = Order::valid()->week()->count();
+        $salesDay = Order::closed()->today()->sum('total');
+        $salesMonth = 0;
+        if(Auth::user()->role=='admin')
+            $salesMonth = Order::closed()->month()->sum('total');
+        
         $resource = [
             "orders" => [
-                "day" => 1,
-                "week" => 1,
+                "day" => $todayOrders,
+                "week" => $weekOrders,
             ],
             "sales" => [
-                "day" => "R$ 770,00",
-                "month" => "R$ 7.770,00"
+                "day" => $salesDay,
+                "month" => $salesMonth
             ]
         ];
 

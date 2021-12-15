@@ -90,7 +90,38 @@ class Order extends Model
     public function professional(){
         return $this->belongsTo(User::class, 'user_id');
     }
-    // public function order_items(){
-    //     return $this->hasMany('App\Models\OrderItem');
-    // }
+
+
+    //SCOPED QUERIES
+    /**
+     * Scope a query to only include orders not canceled.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return void
+     */
+    public function scopeValid($query){
+        return $query->whereIn('status', ['opened','closed']);
+    }
+    public function scopeOpened($query){
+        return $query->where('status', 'opened');
+    }
+    public function scopeClosed($query){
+        return $query->where('status', 'closed');
+    }
+
+    public function scopeToday($query){
+        $today = Carbon::now();
+
+        return $query->whereDate('scheduled_at', $today->format('Y-m-d'));
+    }
+    public function scopeWeek($query){
+        $monday = Carbon::now()->startOfWeek();
+        $sunday = Carbon::now()->endOfWeek();
+        return $query->whereBetween('scheduled_at', [$monday->format('Y-m-d'), $sunday->format('Y-m-d')]);
+    }
+    public function scopeMonth($query){
+        $first = Carbon::now()->startOfMonth();
+        $last = Carbon::now()->endOfMonth();
+        return $query->whereBetween('scheduled_at', [$first->format('Y-m-d'), $last->format('Y-m-d')]);
+    }
 }
