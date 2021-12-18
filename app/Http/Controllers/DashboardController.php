@@ -17,12 +17,13 @@ class DashboardController extends Controller
     public function index()
     {
         //
-        $todayOrders = Order::valid()->today()->count();
-        $weekOrders = Order::valid()->week()->count();
-        $salesDay = Order::closed()->today()->sum('total');
+        $account = Auth::user()->account;
+        $todayOrders = $account->orders()->valid()->today()->count();
+        $weekOrders = $account->orders()->week()->count();
+        $salesDay = $account->orders()->today()->sum('total');
         $salesMonth = 0;
         if(Auth::user()->role=='admin')
-            $salesMonth = Order::closed()->month()->sum('total');
+            $salesMonth = $account->orders()->closed()->month()->sum('total');
         
         $resource = [
             "orders" => [
