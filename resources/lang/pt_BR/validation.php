@@ -167,6 +167,11 @@ return [
         "activity" => "ramo de atividade",
         "other_activity" => "outro ramo",
 
+        "payment_method" => "forma de pagamento",
+        "opened" => "aberto",
+        "closed" => "finalizado",
+        "canceled" => "cancelado",
+
         'address'   => 'endereço',
         'age'       => 'idade',
         'body'      => 'conteúdo',

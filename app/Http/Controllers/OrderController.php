@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\OrderRequest;
+use App\Http\Requests\Order\StoreRequest;
+use App\Http\Requests\Order\UpdateRequest;
 use App\Models\Order;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -20,8 +21,8 @@ class OrderController extends Controller
     public function index()
     {
         return Auth::user()->account->orders()
-            ->with('professional', 'client')
-            ->filter(Request::only('search', 'client_name', 'professional_name', 'schedule_range'))
+            ->with('professional', 'client', 'services')
+            ->filter(Request::only('search', 'client_name', 'professional_name', 'schedule_range', 'canceled'))
             ->orderBy('scheduled_at')
             ->paginate()
             ->appends(Request::all());
@@ -31,10 +32,10 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Order\StoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderRequest $request) 
+    public function store(StoreRequest $request) 
     {
         $inputs = $request->validated();
         $inputs['account_id'] = Auth::user()->account_id;
@@ -78,28 +79,32 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Order\UpdateRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(OrderRequest $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         //
         $order = Order::with(['services'])->where('account_id', Auth::user()->account_id)->find($id);
         $inputs = $request->validated();
 
         // dd($inputs);
-        $services = collect($inputs['services'])
-            ->map(function($servicePrice) {
-                return [
-                    "original_price" => $servicePrice["original_price"],
-                    "price" => $servicePrice["price"],
-                    "professional_id" => $servicePrice["professional_id"]
-                ];
-            });
+        if(isset($inputs['services'])){
+            $services = collect($inputs['services'])
+                ->map(function($servicePrice) {
+                    return [
+                        "original_price" => $servicePrice["original_price"],
+                        "price" => $servicePrice["price"],
+                        "professional_id" => $servicePrice["professional_id"]
+                    ];
+                });
+        }
         
         $order->update($inputs);
-        $order->services()->sync($services);
+
+        if(isset($inputs['services']))
+            $order->services()->sync($services);
 
         return response(
             ['message' => 'resource updated']

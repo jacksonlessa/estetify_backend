@@ -28,8 +28,6 @@ class Order extends Model
             // $query->
             $query->whereHas('client', function ($query) use ($search){
                 return $query->where('name' , 'like', '%'.$search.'%');
-            })->orWhereHas('professional', function ($query) use ($search) {
-                return $query->where('name' , 'like', '%'.$search.'%');
             });
         // TRASH
         })->when($filters['trashed'] ?? null, function ($query, $trashed) {
@@ -37,6 +35,15 @@ class Order extends Model
                 $query->withTrashed();
             } elseif ($trashed === 'only') {
                 $query->onlyTrashed();
+            }
+        // Cancelados
+        })->when($filters['canceled'] ?? null, function ($query, $canceled) {
+            if ($canceled === 'without') {
+                $query->whereIn("status", ['opened','closed']);
+            } elseif ($canceled === 'only') {
+                $query->where("status", 'canceled');
+            } else{
+
             }
         // Nome do Cliente
         })->when($filters['client_name'] ?? null, function ($query, $search) {
