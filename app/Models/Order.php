@@ -73,13 +73,16 @@ class Order extends Model
 
     public function services()
     {
-        return $this->belongsToMany('App\Models\Service', "order_items", 'order_id', 'service_id')->withPivot([
-            'original_price',
-            'price',
-            'professional_id',
-            'created_at',
-            'updated_at',
-        ]);
+        return $this->hasMany(OrderItem::class)
+            ->whereNotNull('service_id')
+            ->with("service","professional");
+        // return $this->belongsToMany('App\Models\Service', "order_items", 'order_id', 'service_id')->withPivot([
+        //     'original_price',
+        //     'price',
+        //     'professional_id',
+        //     'created_at',
+        //     'updated_at',
+        // ]);
     }
     public function products()
     {

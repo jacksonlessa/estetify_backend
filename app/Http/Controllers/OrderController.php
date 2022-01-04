@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Order\StoreRequest;
 use App\Http\Requests\Order\UpdateRequest;
 use App\Models\Order;
+use App\Models\OrderItem;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use DateTime;
@@ -42,18 +43,30 @@ class OrderController extends Controller
         $inputs['user_id'] = Auth::user()->account_id;
 
         // dd($inputs);
-        $services = collect($inputs['services'])
-            ->map(function($servicePrice) {
-                return [
-                    "original_price" => $servicePrice["original_price"],
-                    "price" => $servicePrice["price"],
-                    "professional_id" => $servicePrice["professional_id"]
-                ];
-            });
+        
+
+        $servicesInputs = [];
+        foreach($inputs['services'] as $key => $servicePrice){
+            $servicesInputs[] = [
+                "original_price" => $servicePrice["original_price"],
+                "price" => $servicePrice["price"],
+                "professional_id" => $servicePrice["professional_id"],
+                "service_id" => $key,
+            ];
+        }
+        $services = [];
+        foreach ($servicesInputs as $serviceInput){
+            $service = new OrderItem();
+            $service->fill($serviceInput);
+            $services[]=$service; 
+        }
+        
         
         $order = Order::create($inputs);
+        
+        $order->services()->saveMany($services);
 
-        $order->services()->sync($services);
+        $order->with('services');
         return response($order,201);
     }
 
@@ -89,22 +102,31 @@ class OrderController extends Controller
         $order = Order::with(['services'])->where('account_id', Auth::user()->account_id)->find($id);
         $inputs = $request->validated();
 
-        // dd($inputs);
         if(isset($inputs['services'])){
-            $services = collect($inputs['services'])
-                ->map(function($servicePrice) {
-                    return [
-                        "original_price" => $servicePrice["original_price"],
-                        "price" => $servicePrice["price"],
-                        "professional_id" => $servicePrice["professional_id"]
-                    ];
-                });
+            $servicesInputs = [];
+            foreach($inputs['services'] as $key => $servicePrice){
+                $servicesInputs[] = [
+                    "original_price" => $servicePrice["original_price"],
+                    "price" => $servicePrice["price"],
+                    "professional_id" => $servicePrice["professional_id"],
+                    "service_id" => $key,
+                ];
+            }
+            $services = [];
+            foreach ($servicesInputs as $serviceInput){
+                $service = new OrderItem();
+                $service->fill($serviceInput);
+                $services[]=$service; 
+            }
         }
         
         $order->update($inputs);
 
-        if(isset($inputs['services']))
-            $order->services()->sync($services);
+        if(isset($inputs['services'])){
+            $order->services()->delete();
+            $order->services()->saveMany($services);
+            $order->refresh();
+        }
 
         return response(
             ['message' => 'resource updated']
