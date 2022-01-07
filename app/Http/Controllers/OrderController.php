@@ -23,7 +23,7 @@ class OrderController extends Controller
     {
         return Auth::user()->account->orders()
             ->with('professional', 'client', 'services')
-            ->filter(Request::only('search', 'client_name', 'professional_name', 'schedule_range', 'canceled'))
+            ->filter(Request::only('search', 'client_name', 'professional_name', 'init_date', 'end_date', 'canceled'))
             ->orderBy('scheduled_at')
             ->paginate()
             ->appends(Request::all());

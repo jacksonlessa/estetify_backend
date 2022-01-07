@@ -66,7 +66,20 @@ class Order extends Model
             $end->minute=59;
             $end->second=59;
             $query->whereBetween('scheduled_at', [$init,$end]);
-        })->when($filters['account_id'] ?? null, function ($query, $account) {
+        })->when($filters['init_date'] ?? null, function ($query, $date) {
+            $init = Carbon::parse($date);
+            $init->hour=0;
+            $init->minute=0;
+            $init->second=0;
+            $query->where('scheduled_at', '>=', $init);
+        })->when($filters['end_date'] ?? null, function ($query, $date) {
+            $init = Carbon::parse($date);
+            $init->hour=0;
+            $init->minute=0;
+            $init->second=0;
+            $query->where('scheduled_at', '<', $init);
+        })
+        ->when($filters['account_id'] ?? null, function ($query, $account) {
             $query->where('account_id', $account);
         });
     }
