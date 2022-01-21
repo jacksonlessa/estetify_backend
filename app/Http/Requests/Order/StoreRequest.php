@@ -57,11 +57,25 @@ class StoreRequest extends FormRequest
                 'max:99999.99',
                 'regex:/^\d+(\.\d{1,2})?$/'
             ],
+            "services.*.professional_id" => [
+                'sometimes',
+                'required',
+                'numeric',
+                'min:0',
+                'max:99999.99'
+            ],
             "services" => [
                 'required',
                 'array',
             ]
 
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'payment_method.required_if' => 'O campo forma de pagamento é obrigatório quando status for Finalizado.',
         ];
     }
 }

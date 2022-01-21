@@ -22,7 +22,7 @@ class OrderController extends Controller
     public function index()
     {
         return Auth::user()->account->orders()
-            ->with('professional', 'client', 'services')
+            ->with('client', 'services')
             ->filter(Request::only('search', 'client_name', 'professional_name', 'init_date', 'end_date', 'canceled'))
             ->orderBy('scheduled_at')
             ->paginate()

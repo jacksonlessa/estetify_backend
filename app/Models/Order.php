@@ -74,9 +74,9 @@ class Order extends Model
             $query->where('scheduled_at', '>=', $init);
         })->when($filters['end_date'] ?? null, function ($query, $date) {
             $init = Carbon::parse($date);
-            $init->hour=0;
-            $init->minute=0;
-            $init->second=0;
+            $init->hour=23;
+            $init->minute=59;
+            $init->second=59;
             $query->where('scheduled_at', '<', $init);
         })
         ->when($filters['account_id'] ?? null, function ($query, $account) {

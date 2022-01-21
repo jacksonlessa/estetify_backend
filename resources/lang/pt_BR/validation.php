@@ -163,6 +163,9 @@ return [
         "professional _id" => "cliente",
         "scheduled_at" => "data e hora",
         "services" => "serviços",
+        "services.*.price" => "preço",
+        "services.*.original_price" => "preço original",
+        "services.*.professional_id" => "profissional",
         
         "activity" => "ramo de atividade",
         "other_activity" => "outro ramo",
