@@ -29,8 +29,8 @@ use App\Http\Controllers\DashboardController;
 
 // ## Public routes
 // # Auth
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register'])->name("register");
+Route::post('login', [AuthController::class, 'login'])->name("login");
 Route::put('/auth/recover-password',
         [AuthController::class, 'recoverPassword']
     )->name('auth.recover-password');
@@ -41,7 +41,7 @@ Route::put('/auth/reset-password',
 // ## Protected routes
 Route::middleware(['auth:sanctum'])->group(function () {
     // Logout
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('logout', [AuthController::class, 'logout'])->name("logout");
 
     
     // Restore Routes
