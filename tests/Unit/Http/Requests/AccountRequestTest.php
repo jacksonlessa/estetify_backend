@@ -21,7 +21,7 @@ class AccountRequestTest extends TestCase
      * @test  
      * @throws \Throwable  
      */  
-    public function name_is_required()  
+    public function check_if_name_is_required()  
     {  
         $validatedField = 'name';  
         $brokenRule = null;  
@@ -51,7 +51,7 @@ class AccountRequestTest extends TestCase
      * @test  
      * @throws \Throwable  
      */  
-    public function document_is_required()  
+    public function check_if_document_is_required()  
     {  
         $validatedField = 'document';  
         $brokenRule = null;  
@@ -81,7 +81,7 @@ class AccountRequestTest extends TestCase
      * @test  
      * @throws \Throwable  
      */  
-    public function document_must_not_exceed_18_characters()  
+    public function check_if_document_must_not_exceed_18_characters()  
     {  
         $validatedField = 'document';  
         $brokenRule = Str::random(19);
@@ -111,7 +111,7 @@ class AccountRequestTest extends TestCase
      * @test  
      * @throws \Throwable  
      */  
-    public function activity_is_required()  
+    public function check_if_activity_is_required()  
     {  
         $validatedField = 'activity';  
         $brokenRule = null;  
@@ -141,7 +141,7 @@ class AccountRequestTest extends TestCase
      * @test  
      * @throws \Throwable  
      */  
-    public function other_activity_is_required_if_activity_Outro()  
+    public function check_if_other_activity_is_required_if_activity_value_is_outro()  
     {  
         $validatedField = 'activity';  
         $brokenRule = "Outro";  
@@ -171,7 +171,7 @@ class AccountRequestTest extends TestCase
      * @test  
      * @throws \Throwable  
      */  
-    public function phone_is_required()  
+    public function check_if_phone_is_required()  
     {  
         $validatedField = 'phone';  
         $brokenRule = null;  
@@ -201,7 +201,7 @@ class AccountRequestTest extends TestCase
      * @test  
      * @throws \Throwable  
      */  
-    public function phone_must_not_exceed_15_characters()  
+    public function check_if_phone_must_not_exceed_15_characters()  
     {  
         $validatedField = 'phone';  
         $brokenRule = Str::random(16);

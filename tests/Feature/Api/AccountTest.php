@@ -97,7 +97,7 @@ class AccountTest extends TestCase
 				"activity" => $accountFactory->activity,
 				"phone" => $accountFactory->phone,
 				"plan_id" => $accountFactory->plan_id,
-				// "features" =>  $accountFactory->features,
+				// "features" => $accountFactory->features,
 			]
 		);
 		
