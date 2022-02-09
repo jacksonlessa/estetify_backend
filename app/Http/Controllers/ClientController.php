@@ -18,7 +18,7 @@ class ClientController extends Controller
         return Auth::user()->account->clients()
             ->orderBy('name')
             ->filter(Request::only('search', 'trashed', 'phone','document','email'))
-            ->paginate()
+            ->paginate(Request::input('limit'))
             ->appends(Request::all());
     }
 
@@ -34,7 +34,10 @@ class ClientController extends Controller
             $request->validated()
         );
 
-        return response($resource,201);
+        return response([
+                'message' => 'resource created',
+                "data" => $resource
+            ],201);
     }
 
     /**
@@ -73,7 +76,10 @@ class ClientController extends Controller
         
         if($client->update($request->validated()))
             return response(
-                ['message' => 'resource updated']
+                [
+                    'message' => 'resource updated',
+                    "data" => $client
+                ]
                 ,200);
     }
 

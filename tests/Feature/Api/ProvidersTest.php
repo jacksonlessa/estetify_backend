@@ -11,15 +11,24 @@ class ProvidersTest extends TestCase
 {
     use RefreshDatabase;
 	
+	public function setUp () : void{
+		parent::setUp();
 
+		\App\Models\Account::factory()
+            ->count(1)
+            ->hasUsers(2)
+            ->hasClients(10)
+            ->hasProfessionals(1)
+            ->create();
+	}
     /** @test */
-	// public function can_get_all_providers()
-	// {
-	// 	// Create Property so that the response returns it.
-	// 	$property = Provider::factory()->create();
+	public function can_get_all_providers()
+	{
+		// Create Property so that the response returns it.
+		$property = Provider::factory()->create();
 		
-	// 	$response = $this->getJson(route('api.provider.index'));
-	// 	// We will only assert that the response returns a 200 status for now.
-	// 	$response->assertOk(); 
-	// }
+		$response = $this->getJson(route('api.provider.index'));
+		// We will only assert that the response returns a 200 status for now.
+		$response->assertOk(); 
+	}
 }
