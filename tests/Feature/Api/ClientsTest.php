@@ -41,8 +41,8 @@ class ClientsTest extends TestCase
 	public function can_get_all_clients()
 	{
 		$response = $this->getJson(route($this->routePrefix.'index'));
+		
 		// We will only assert that the response returns a 200 status for now.
-
 		$response->assertOk(); 
 
 		$responseArray = json_decode($response->getContent());

@@ -33,13 +33,15 @@ class ProviderController extends Controller
      */
     public function store(ProviderRequest $request)
     {
-        $accountId = Auth::user()->account_id;
 
-        $resource = Auth::user()->account->services()->create(
+        $resource = Auth::user()->account->providers()->create(
             $request->validated()
         );
 
-        return response($resource,201);
+        return response([
+            'message' => 'resource created',
+            "data" => $resource
+        ],201);
     }
 
     /**
@@ -50,14 +52,14 @@ class ProviderController extends Controller
      */
     public function show($id)
     {
-        $service = Auth::user()->account->services()->withTrashed()->find($id);
+        $provider = Auth::user()->account->providers()->withTrashed()->find($id);
         
-        if(!$service)
+        if(!$provider)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
         
-        return $service;
+        return $provider;
         // return Service::find($id);
     }
 
@@ -70,16 +72,19 @@ class ProviderController extends Controller
      */
     public function update(ProviderRequest $request, $id)
     {
-        $service =  Auth::user()->account->services()->find($id);
+        $provider =  Auth::user()->account->providers()->find($id);
 
-        if(!$service)
+        if(!$provider)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
         
-        if($service->update($request->validated()))
+        if($provider->update($request->validated()))
             return response(
-                ['message' => 'resource updated']
+                [
+                    'message' => 'resource updated',                    
+                    "data" => $provider
+                ]
                 ,200);
     }
 
@@ -91,7 +96,7 @@ class ProviderController extends Controller
      */
     public function destroy($id)
     {
-        $service =  Auth::user()->account->services()->find($id);
+        $service =  Auth::user()->account->providers()->find($id);
 
         if(!$service)
             return response(
@@ -113,7 +118,7 @@ class ProviderController extends Controller
      */
     public function restore($id)
     {
-        $service =  Auth::user()->account->services()->withTrashed()->find($id);
+        $service =  Auth::user()->account->providers()->withTrashed()->find($id);
 
         if(!$service)
             return response(

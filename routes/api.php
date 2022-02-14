@@ -11,6 +11,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ProviderController;
 
 use App\Http\Controllers\OrderController;
 
@@ -53,7 +54,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('professionals.restore');
     Route::put('users/{id}/restore', [UserController::class, 'restore'])
         ->name('users.restore');
-
+    Route::put('providers/{id}/restore', [ProviderController::class, 'restore'])
+        ->name('providers.restore');
 
 
     Route::post('accounts/plan', [AccountController::class, 'storePlan'])
@@ -66,7 +68,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         'clients' => ClientController::class,
         'professionals' => ProfessionalController::class,
         'users' => UserController::class,
-        'orders' => OrderController::class,
+        'orders' => OrderController::class,        
+        'providers' => ProviderController::class,
     ]);
 
     // Professionals
