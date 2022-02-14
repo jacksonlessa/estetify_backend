@@ -10,7 +10,7 @@ class Provider extends Model
 {
     use HasFactory, SoftDeletes;
     
-    protected $fillable = ['name','description','document','email','phone'];
+    protected $fillable = ['name','description','document', 'phone', 'email' ];
     
     /**
      * Get the account that owns the service.

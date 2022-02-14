@@ -21,6 +21,29 @@ class AccountRequestTest extends TestCase
      * @test  
      * @throws \Throwable  
      */  
+    public function check_if_can_store_account_without_errors(){
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
+        $account = Account::factory()->make();
+
+
+        $response = $this->postJson(
+            route($this->routePrefix . 'store'),
+            [
+                "name" => $account->name,
+                "document" => $account->document,
+                "activity" => $account->activity,
+                "phone" => $account->phone,
+            ]
+        )->assertCreated();
+    }
+    /**  
+     * @test  
+     * @throws \Throwable  
+     */  
     public function check_if_name_is_required()  
     {  
         $validatedField = 'name';  
