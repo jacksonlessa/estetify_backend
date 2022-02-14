@@ -31,6 +31,15 @@ class ProviderRequest extends FormRequest
             'account_id' => 'required',
             'name' => 'required|max:255',
             'description' => 'nullable|max:255',
+            'email' => [
+                'nullable',
+                // 'required',
+                'email'
+            ],
+            'phone' => [
+                'nullable',
+                'max:15'
+            ],
             'document' => [
                 'nullable',
                 'max:18'

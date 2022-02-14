@@ -20,6 +20,8 @@ class CreateProvidersTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->string('document', 18)->nullable();
+            $table->string('phone', 15)->nullable();
+            $table->string('email')->nullable();
         
             $table->softDeletes();
             $table->timestamps();

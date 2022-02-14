@@ -25,6 +25,8 @@ class ProviderFactory extends Factory
             'account_id' => 1,
             'name' => $this->faker->company,
             'description' => $this->faker->text(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'phone' => "(".rand(30,50).") ".rand(88000,99999)."-".rand(1000,9999),
             'document' => ((rand(0,5) < 3) ? rand(10000000000, 99999999999) : rand(10000000000000, 99999999999999)),
         ];
     }

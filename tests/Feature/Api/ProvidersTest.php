@@ -95,6 +95,8 @@ class ProvidersTest extends TestCase
 			"name" => $provider->name,
 			"description" => $provider->description,
 			"document" => $provider->document,
+			"email" => $provider->email,
+			"phone" => $provider->phone,
 			"deleted_at" => $provider->deleted_at,
 			"created_at" => $provider->created_at->toJSON(),
 			"updated_at" => $provider->updated_at->toJSON(),
