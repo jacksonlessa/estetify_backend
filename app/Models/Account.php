@@ -68,4 +68,12 @@ class Account extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    /**
+     * Get the clients for the account.
+     */
+    public function providers()
+    {
+        return $this->hasMany(Provider::class);
+    }
 }

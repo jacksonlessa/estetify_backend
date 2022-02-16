@@ -11,6 +11,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ProviderController;
 
 use App\Http\Controllers\OrderController;
 
@@ -29,8 +30,8 @@ use App\Http\Controllers\DashboardController;
 
 // ## Public routes
 // # Auth
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register'])->name("register");
+Route::post('login', [AuthController::class, 'login'])->name("login");
 Route::put('/auth/recover-password',
         [AuthController::class, 'recoverPassword']
     )->name('auth.recover-password');
@@ -41,7 +42,7 @@ Route::put('/auth/reset-password',
 // ## Protected routes
 Route::middleware(['auth:sanctum'])->group(function () {
     // Logout
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('logout', [AuthController::class, 'logout'])->name("logout");
 
     
     // Restore Routes
@@ -53,7 +54,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('professionals.restore');
     Route::put('users/{id}/restore', [UserController::class, 'restore'])
         ->name('users.restore');
-
+    Route::put('providers/{id}/restore', [ProviderController::class, 'restore'])
+        ->name('providers.restore');
 
 
     Route::post('accounts/plan', [AccountController::class, 'storePlan'])
@@ -66,7 +68,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         'clients' => ClientController::class,
         'professionals' => ProfessionalController::class,
         'users' => UserController::class,
-        'orders' => OrderController::class,
+        'orders' => OrderController::class,        
+        'providers' => ProviderController::class,
     ]);
 
     // Professionals

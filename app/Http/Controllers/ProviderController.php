@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ClientRequest;
+use App\Http\Requests\ProviderRequest;
+use App\Models\Provider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
-class ClientController extends Controller
+class ProviderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,29 +16,32 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return Auth::user()->account->clients()
-            ->orderBy('name')
-            ->filter(Request::only('search', 'trashed', 'phone','document','email'))
-            ->paginate(Request::input('limit'))
+        // $accountId = Auth::user()->account_id;
+        
+        // return Provider::where("account_id", $accountId)
+        return Provider::orderBy('name')
+            ->filter(Request::only('search', 'trashed'))
+            ->paginate()
             ->appends(Request::all());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\ClientRequest  $request
+     * @param  \App\Http\Requests\ProviderRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ClientRequest $request)
+    public function store(ProviderRequest $request)
     {
-        $resource = Auth::user()->account->clients()->create(
+
+        $resource = Auth::user()->account->providers()->create(
             $request->validated()
         );
 
         return response([
-                'message' => 'resource created',
-                "data" => $resource
-            ],201);
+            'message' => 'resource created',
+            "data" => $resource
+        ],201);
     }
 
     /**
@@ -48,61 +52,64 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        $client = Auth::user()->account->clients()->withTrashed()->find($id);
+        $provider = Auth::user()->account->providers()->withTrashed()->find($id);
         
-        if(!$client)
+        if(!$provider)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
         
-        return $client;
+        return $provider;
+        // return Service::find($id);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\ClientRequest  $request
+     * @param  \App\Http\Requests\ProviderRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ClientRequest $request, $id)
+    public function update(ProviderRequest $request, $id)
     {
-        $client =  Auth::user()->account->clients()->find($id);
+        $provider =  Auth::user()->account->providers()->find($id);
 
-        if(!$client)
+        if(!$provider)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
         
-        if($client->update($request->validated()))
+        if($provider->update($request->validated()))
             return response(
                 [
-                    'message' => 'resource updated',
-                    "data" => $client
+                    'message' => 'resource updated',                    
+                    "data" => $provider
                 ]
                 ,200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $client =  Auth::user()->account->clients()->find($id);
+        $service =  Auth::user()->account->providers()->find($id);
 
-        if(!$client)
+        if(!$service)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
-        if($client->delete())
+        if($service->delete())
             return response(
                 ['message' => 'resource deleted']
-                ,200);
-    }
+                ,200); 
 
+        //
+    }
+    
     /**
      * Restore the specified resource from storage.
      *
@@ -111,14 +118,14 @@ class ClientController extends Controller
      */
     public function restore($id)
     {
-        $client =  Auth::user()->account->clients()->withTrashed()->find($id);
+        $service =  Auth::user()->account->providers()->withTrashed()->find($id);
 
-        if(!$client)
+        if(!$service)
             return response(
                 ['message' => 'insufficient permission']
                 ,403);
 
-        if($client->restore())
+        if($service->restore())
             return response(
                 ['message' => 'resource restored']
                 ,200);
