@@ -40,7 +40,7 @@ class OrderController extends Controller
     {
         $inputs = $request->validated();
         $inputs['account_id'] = Auth::user()->account_id;
-        $inputs['user_id'] = Auth::user()->account_id;
+        $inputs['user_id'] = Auth::user()->id;
 
         // dd($inputs);
         
