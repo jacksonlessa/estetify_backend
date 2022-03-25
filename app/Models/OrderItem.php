@@ -13,6 +13,9 @@ class OrderItem extends Model
 
     protected $fillable = ['original_price', 'price', 'professional_id', 'product_id', 'service_id'];
     
+    protected $primaryKey = null;
+
+    public $incrementing = false;
 
     public function service()
     {
