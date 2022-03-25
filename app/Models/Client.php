@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +11,10 @@ class Client extends Model
 {
     use HasFactory, SoftDeletes;
     
-    protected $fillable = ['name','email','phone','document','birthdate','account_id'];
+    protected $fillable = [
+        'name','email','phone','document','birthdate','account_id',
+        'address','neighborhood','city','state','postal_code'
+    ];
     
     /**
      * Get the account that owns the client.
@@ -18,6 +22,14 @@ class Client extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+
+    public function setBirthdateAttribute($timestampTz)
+    {   
+        $timestamp = new Carbon($timestampTz);
+        $timestamp->subHour(3); // fix timezone
+        $this->attributes['birthdate'] = $timestamp;
     }
 
     public function scopeFilter($query, array $filters)

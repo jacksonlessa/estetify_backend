@@ -40,6 +40,26 @@ class ClientRequest extends FormRequest
                 'nullable',
                 'max:18'
             ],
+            'address' => [
+                'nullable',
+                'max:255'
+            ],
+            'neighborhood' => [
+                'nullable',
+                'max:50'
+            ],
+            'city' => [
+                'nullable',
+                'max:50'
+            ],
+            'state' => [
+                'nullable',
+                'max:2'
+            ],
+            'postal_code' => [
+                'nullable',
+                'max:9'
+            ],
         ];
     }    
 }
