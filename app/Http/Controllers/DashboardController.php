@@ -19,8 +19,8 @@ class DashboardController extends Controller
         //
         $account = Auth::user()->account;
         $todayOrders = $account->orders()->valid()->today()->count();
-        $weekOrders = $account->orders()->week()->count();
-        $salesDay = $account->orders()->today()->sum('total');
+        $weekOrders = $account->orders()->valid()->week()->count();
+        $salesDay = $account->orders()->valid()->today()->sum('total');
         $salesMonth = 0;
         if(Auth::user()->role=='admin')
             $salesMonth = $account->orders()->closed()->month()->sum('total');

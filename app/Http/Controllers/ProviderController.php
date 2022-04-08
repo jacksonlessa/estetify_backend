@@ -16,10 +16,10 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        // $accountId = Auth::user()->account_id;
+        $accountId = Auth::user()->account_id;
         
-        // return Provider::where("account_id", $accountId)
-        return Provider::orderBy('name')
+        return Provider::where("account_id", $accountId)
+            ->orderBy('name')
             ->filter(Request::only('search', 'trashed'))
             ->paginate()
             ->appends(Request::all());
