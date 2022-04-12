@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -50,6 +51,19 @@ class User extends Authenticatable
         $this->attributes['password'] = Hash::make($password);
     }
 
+    /**
+     * Send a password reset notification to the user.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $url = env('FRONT_URl').'reset-password?token='.$token;
+    
+        $this->notify(new ResetPasswordNotification($url,$this));
+    }
+
 
     /**
      * Get the account that owns the user.
@@ -70,6 +84,5 @@ class User extends Authenticatable
                 $query->onlyTrashed();
             }
         });
-    }
-
+    }    
 }
