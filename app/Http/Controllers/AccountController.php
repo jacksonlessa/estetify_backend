@@ -6,6 +6,7 @@ use App\Models\Account;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateAccountRequest;
 use App\Http\Requests\PlanSelectRequest;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
@@ -38,6 +39,21 @@ class AccountController extends Controller
         $user = Auth::user();
         $user->account_id= $resource->id;
         $user->save();
+
+
+        // SETUP ACCOUNT 
+        // Update Account Plan
+        $resource->plan_id = 1;
+        $resource->features = '{"products":20,"services":true,"professionals":1}';
+        $resource->save();
+
+        // Create First Professional
+        $professional = Auth::user()->account->professionals()->create([
+            'name' => $user->name
+        ]);
+
+        // Send Welcome Notification
+        $user->notify(new WelcomeNotification($user, $resource));
 
         return response($resource,201);
     }
